@@ -10,7 +10,9 @@ public class Seawolf8Control : MonoBehaviour
 {
 
     public Camera realSense;
-
+    public float simSpeed = 0.05f;
+    public float simAngleSpeed = 0.05f;
+    public float realWorldScale = 1.0f/10.0f;
     ROSConnection ros;
 
     //rate of movement
@@ -42,12 +44,12 @@ public class Seawolf8Control : MonoBehaviour
     void FixedUpdate()
     {
         //update motion based on RC rates
-        this.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-strafeRate, verticalRate, -forwardRate);
+        this.gameObject.GetComponent<Rigidbody>().velocity = this.gameObject.transform.worldToLocalMatrix * new Vector3(strafeRate, forwardRate, -verticalRate) * simSpeed;
         this.gameObject.GetComponent<Rigidbody>().angularVelocity = new Vector3(pitchRate, -yawRate, rollRate);
 
         //send state data
-        ros.Send<Float64Msg>("wolf_gazebo/global_alt", new Float64Msg(this.transform.position.y));
-        ros.Send<Float64Msg>("wolf_gazebo/compass_hdg", new Float64Msg(this.transform.rotation.eulerAngles.y));
+        ros.Send<Float64Msg>("wolf_gazebo/global_alt", new Float64Msg(this.transform.position.y * realWorldScale));
+        ros.Send<Float64Msg>("wolf_gazebo/compass_hdg", new Float64Msg(Mathf.Deg2Rad * this.transform.rotation.eulerAngles.y));
 
         //send image data
         RenderTexture.active = realSense.targetTexture;
