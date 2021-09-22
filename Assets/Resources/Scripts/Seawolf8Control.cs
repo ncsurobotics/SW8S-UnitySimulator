@@ -57,7 +57,9 @@ public class Seawolf8Control : MonoBehaviour
 
         // Copy the pixels from the GPU into a texture so we can work with them
         // For more efficiency you should reuse this texture, instead of creating a new one every time
-        Texture2D camText = new Texture2D(renderTexture.width, renderTexture.height);
+        Texture2D camText = new Texture2D(renderTexture.width, renderTexture.height,
+                                            UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_SRGB, 
+                                            UnityEngine.Experimental.Rendering.TextureCreationFlags.None);
         camText.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
         camText.Apply();
         RenderTexture.active = oldRT;
@@ -66,7 +68,7 @@ public class Seawolf8Control : MonoBehaviour
         // Encode the texture as a PNG, and send to ROS
         byte[] imageBytes = camText.GetRawTextureData();
         HeaderMsg header = new HeaderMsg();
-        ImageMsg message = new ImageMsg(header, (uint)renderTexture.width, (uint)renderTexture.height, "rgba8", 0, 480 * 4, imageBytes);
+        ImageMsg message = new ImageMsg(header, (uint)renderTexture.height, (uint)renderTexture.width, "rgba8", 0, 640 * 4, imageBytes);
         ros.Send<ImageMsg>("wolf_camera1/image_raw", message);
     }
 
