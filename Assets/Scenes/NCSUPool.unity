@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   realSense: {fileID: 1823025031}
-  simSpeed: 0.015
+  simSpeed: 0.025
   simAngleSpeed: 0.05
   realWorldScale: 0.2
 --- !u!54 &301345758
@@ -694,15 +694,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ee6f73715045106fbfac30eccfbfe5b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.54
+      value: -4.99
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ee6f73715045106fbfac30eccfbfe5b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ee6f73715045106fbfac30eccfbfe5b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.46
+      value: -22.98
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ee6f73715045106fbfac30eccfbfe5b, type: 3}
       propertyPath: m_LocalRotation.w
