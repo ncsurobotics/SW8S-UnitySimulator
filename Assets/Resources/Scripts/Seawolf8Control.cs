@@ -38,12 +38,12 @@ public class Seawolf8Control : MonoBehaviour
     void FixedUpdate()
     {
         //update motion based on RC rates
-        this.gameObject.GetComponent<Rigidbody>().velocity = this.gameObject.transform.worldToLocalMatrix * new Vector3(strafeRate, forwardRate, -verticalRate) * simSpeed;
-        this.gameObject.GetComponent<Rigidbody>().angularVelocity = new Vector3(pitchRate, -yawRate, rollRate);
+        this.gameObject.GetComponent<Rigidbody>().velocity = ((this.transform.up * verticalRate) + (this.transform.right * -strafeRate) + (this.transform.forward * -forwardRate)) * simSpeed;
+        this.gameObject.GetComponent<Rigidbody>().angularVelocity = new Vector3(pitchRate, -yawRate, rollRate) * simAngleSpeed;
 
         //send state data
         ros.Send<Float64Msg>("wolf_gazebo/global_alt", new Float64Msg(this.transform.position.y * realWorldScale));
-        ros.Send<Float64Msg>("wolf_gazebo/compass_hdg", new Float64Msg(Mathf.Deg2Rad * this.transform.rotation.eulerAngles.y));
+        ros.Send<Float64Msg>("wolf_gazebo/compass_hdg", new Float64Msg(Mathf.Deg2Rad * this.transform.localRotation.eulerAngles.y));
     }
 
 
