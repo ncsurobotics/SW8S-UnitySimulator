@@ -53,8 +53,25 @@ public class ROSCamera : MonoBehaviour
 
             // Encode the texture as a PNG, and send to ROS
             byte[] imageBytes = camText.GetRawTextureData();
+            byte[] processedData = new byte[imageBytes.Length];
+
+            // now flip vertical pixels
+            for (int i = 0; i < imageBytes.Length; i += 4)
+            {
+                var arrayIndex = i / 4;
+                var x = arrayIndex % imageWidth;
+                var y = arrayIndex / imageWidth;
+                var flippedY = (imageHeight - 1 - y);
+                var flippedIndex = x + flippedY * imageWidth;
+                // flip the data
+                processedData[i] = imageBytes[flippedIndex * 4];
+                processedData[i + 1] = imageBytes[flippedIndex * 4 + 1];
+                processedData[i + 2] = imageBytes[flippedIndex * 4 + 2];
+                processedData[i + 3] = imageBytes[flippedIndex * 4 + 3];
+            }
+
             HeaderMsg header = new HeaderMsg();
-            ImageMsg message = new ImageMsg(header, (uint)renderTexture.height, (uint)renderTexture.width, "rgba8", 0, imageWidth * 4, imageBytes);
+            ImageMsg message = new ImageMsg(header, (uint)renderTexture.height, (uint)renderTexture.width, "rgba8", 0, imageWidth * 4, processedData);
             ros.Send<ImageMsg>(imageTopic, message);
             timeSinceLastUpdate = 0;
         }
