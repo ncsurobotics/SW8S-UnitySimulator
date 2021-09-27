@@ -1,0 +1,3 @@
+[submodule "Packages/Maktub"]
+	path = Packages/Maktub
+	url = https://github.com/RobotCodeLab/Maktub
