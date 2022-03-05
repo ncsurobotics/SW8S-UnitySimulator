@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Sensor;
 using RosMessageTypes.Std;
+using RosMessageTypes.Seawolf8Simulation;
 
 public class Seawolf8Control : MonoBehaviour
 {
@@ -28,38 +29,33 @@ public class Seawolf8Control : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ros = ROSConnection.instance;
-        ros.Subscribe<Float32MultiArrayMsg>("wolf_RC_output", RCCallback);
-        ros.RegisterPublisher<Float64Msg>("wolf_gazebo/global_alt");
-        ros.RegisterPublisher<Float64Msg>("wolf_gazebo/compass_hdg");
+        ros = ROSConnection.GetOrCreateInstance();
+        ros.Subscribe<OverrideRCInMsg>("mavros/rc/override", RCCallback);
+        ros.RegisterPublisher<Float64Msg>("mavros/global_position/rel_alt");
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         //update motion based on RC rates
-        this.gameObject.GetComponent<Rigidbody>().velocity = ((this.transform.up * verticalRate) + (this.transform.right * -strafeRate) + (this.transform.forward * -forwardRate)) * simSpeed;
+        this.gameObject.GetComponent<Rigidbody>().velocity = ((this.transform.up * verticalRate) + (this.transform.forward * forwardRate) + (this.transform.right * strafeRate)) * simSpeed;
         this.gameObject.GetComponent<Rigidbody>().angularVelocity = new Vector3(pitchRate, -yawRate, rollRate) * simAngleSpeed;
 
+
         //send state data
-        ros.Send<Float64Msg>("wolf_gazebo/global_alt", new Float64Msg(this.transform.position.y * realWorldScale));
-        ros.Send<Float64Msg>("wolf_gazebo/compass_hdg", new Float64Msg(Mathf.Deg2Rad * this.transform.localRotation.eulerAngles.y));
+        ros.Publish("mavros/global_position/rel_alt", new Float64Msg(this.transform.position.y * realWorldScale));
     }
 
 
-    void RCCallback(Float32MultiArrayMsg rates)
+    async void RCCallback(OverrideRCInMsg rates)
     {
-        //only accepts a 6 member 1D float array
-        if (rates.data.Length != 6)
-        {
-            return;
-        }
-
-        pitchRate = rates.data[0];
-        rollRate = rates.data[1];
-        verticalRate = rates.data[2];
-        yawRate = rates.data[3];
-        forwardRate = rates.data[4];
-        strafeRate = rates.data[5];
+        pitchRate = Mathf.Lerp(-1.0f, 1.0f, (rates.channels[0] - 1000.0f) / 1000.0f);
+        rollRate = Mathf.Lerp(-1.0f, 1.0f, (rates.channels[1] - 1000f) / 1000f);
+        verticalRate = Mathf.Lerp(-1.0f, 1.0f, (rates.channels[2] - 1000f) / 1000f);
+        yawRate = Mathf.Lerp(-1.0f, 1.0f, (rates.channels[3] - 1000f) / 1000f);
+        forwardRate = Mathf.Lerp(-1.0f, 1.0f, (rates.channels[4] - 1000f) / 1000f);
+        strafeRate = Mathf.Lerp(-1.0f, 1.0f, (rates.channels[5] - 1000f) / 1000f);
+        //Debug.Log(rates.channels[0] + " " + rates.channels[1] + " " + rates.channels[2] + " " + rates.channels[3] + " " + rates.channels[4] + " " + rates.channels[5]);
+        //Debug.Log(pitchRate + " " + rollRate + " " + verticalRate + " " + yawRate + " " + forwardRate + " " + strafeRate);
     }
 }

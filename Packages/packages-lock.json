@@ -8,13 +8,20 @@
         "com.unity.robotics.ros-tcp-connector": "0.5.0-preview"
       }
     },
+    "com.ncsurobotcodelab.unityrosutils": {
+      "version": "https://github.com/RobotCodeLab/UnityRosUtils.git#imu_sensor",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.robotics.ros-tcp-connector": "0.5.0-preview"
+      },
+      "hash": "a66650f28f3ed4c85d11d4ca5d9da1a5425a3331"
+    },
     "com.unity.collab-proxy": {
-      "version": "1.7.1",
+      "version": "1.11.2",
       "depth": 0,
       "source": "registry",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.0"
-      },
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ext.nunit": {
@@ -25,11 +32,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "2.0.7",
+      "version": "3.0.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.test-framework": "1.1.1"
+        "com.unity.ext.nunit": "1.0.6"
       },
       "url": "https://packages.unity.com"
     },
@@ -43,15 +50,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.vscode": {
-      "version": "1.2.3",
+      "version": "1.2.4",
       "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.nuget.newtonsoft-json": {
-      "version": "2.0.0",
-      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -61,7 +61,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "f7f669f212423ff03817a2094f489547158a3852"
+      "hash": "7f055108f43ab11ff297175a52af5d30fbac9d57"
     },
     "com.unity.sysroot": {
       "version": "0.1.19-preview",
@@ -80,7 +80,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.1.27",
+      "version": "1.1.29",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -100,7 +100,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.4.8",
+      "version": "1.5.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {

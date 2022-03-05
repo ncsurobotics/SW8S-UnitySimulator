@@ -20,7 +20,7 @@ public class ROSCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ros = ROSConnection.instance;
+        ros = ROSConnection.GetOrCreateInstance();
         ros.RegisterPublisher<ImageMsg>(imageTopic);
         attachedCamera = this.gameObject.GetComponent<Camera>();
 
@@ -72,7 +72,7 @@ public class ROSCamera : MonoBehaviour
 
             HeaderMsg header = new HeaderMsg();
             ImageMsg message = new ImageMsg(header, (uint)renderTexture.height, (uint)renderTexture.width, "rgba8", 0, imageWidth * 4, processedData);
-            ros.Send<ImageMsg>(imageTopic, message);
+            ros.Publish(imageTopic, message);
             timeSinceLastUpdate = 0;
         }
     }
