@@ -15,7 +15,7 @@
       "dependencies": {
         "com.unity.robotics.ros-tcp-connector": "0.5.0-preview"
       },
-      "hash": "a66650f28f3ed4c85d11d4ca5d9da1a5425a3331"
+      "hash": "a339de9a2075832a51d63960b63f3407bc801cad"
     },
     "com.unity.collab-proxy": {
       "version": "1.11.2",
